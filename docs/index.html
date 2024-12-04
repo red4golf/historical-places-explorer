@@ -53,18 +53,17 @@
     <div id="map"></div>
 
     <script>
-        // Replace with your Mapbox token
-        mapboxgl.accessToken = 'YOUR-MAPBOX-TOKEN';
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2VpbmFyc29uIiwiYSI6ImNtNGEybmN0ajAzOWQycXE1M2VibWNiZjkifQ.7JrNDHO9geEP_L9UT4hGgg';
 
         let map;
         let currentMarker = null;
         const statusDiv = document.getElementById('status');
 
-        // Initialize map
+        // Initialize map with a specific style URL
         try {
             map = new mapboxgl.Map({
                 container: 'map',
-                style: 'mapbox://styles/mapbox/outdoors-v12',
+                style: 'mapbox://styles/mapbox/streets-v12',  // Changed to streets style
                 center: [-122.5199, 47.6262],
                 zoom: 12
             });
@@ -150,6 +149,16 @@
                 options
             );
         }
+
+        // Add error handler for map load failures
+        map.on('error', function(e) {
+            statusDiv.innerHTML = 'Map error: ' + e.error.message;
+        });
+
+        // Add load success handler
+        map.on('load', function() {
+            statusDiv.innerHTML = 'Map loaded successfully';
+        });
     </script>
 </body>
 </html>
