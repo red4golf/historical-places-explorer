@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Story Connections",
+  "description": "Schema for connecting stories to locations, time periods, and related content",
+  "type": "object",
+  "required": ["id", "type", "connections"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the story"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["primary", "personal", "historical", "cultural", "architectural"],
+      "description": "Type of story narrative"
+    },
+    "connections": {
+      "type": "object",
+      "properties": {
+        "locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "relationship"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Location identifier"
+              },
+              "relationship": {
+                "type": "string",
+                "enum": ["primary", "mentioned", "related", "nearby"],
+                "description": "How this location relates to the story"
+              },
+              "coordinates": {
+                "type": "object",
+                "properties": {
+                  "lat": { "type": "number" },
+                  "lng": { "type": "number" }
+                }
+              },
+              "relevantFeatures": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Specific features mentioned in the story"
+              }
+            }
+          }
+        },
+        "timePeriods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["period"],
+            "properties": {
+              "period": {
+                "type": "string",
+                "description": "Time period identifier or range"
+              },
+              "importance": {
+                "type": "string",
+                "enum": ["primary", "secondary", "reference"],
+                "description": "How central this period is to the story"
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "relatedStories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "connection": {
+                "type": "string",
+                "enum": ["sequel", "prequel", "parallel", "contrast", "reference"]
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "themes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Major themes this story covers"
+        }
+      }
+    }
+  }
+}

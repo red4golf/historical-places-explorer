@@ -1,0 +1,187 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Media Schema",
+  "description": "Core schema for historical media assets",
+  "type": "object",
+  "required": ["id", "mediaType", "content"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the media item"
+    },
+    "mediaType": {
+      "type": "string",
+      "enum": ["image", "video", "audio", "document", "comparison"],
+      "description": "Type of media content"
+    },
+    "content": {
+      "type": "object",
+      "required": ["title", "files"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Display title for the media"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "type"],
+            "properties": {
+              "path": {
+                "type": "string",
+                "description": "Path to the media file"
+              },
+              "type": {
+                "type": "string",
+                "description": "File type (e.g., jpg, mp4, pdf)"
+              },
+              "size": {
+                "type": "string",
+                "description": "File size information"
+              },
+              "resolution": {
+                "type": "string",
+                "description": "For images/videos, the resolution"
+              }
+            }
+          }
+        },
+        "thumbnail": {
+          "type": "string",
+          "description": "Path to thumbnail image"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "object",
+          "properties": {
+            "captured": {
+              "type": "string",
+              "description": "When the media was created"
+            },
+            "period": {
+              "type": "string",
+              "description": "Historical period represented"
+            },
+            "uncertainty": {
+              "type": "string",
+              "description": "Notes about date uncertainty"
+            }
+          }
+        },
+        "location": {
+          "type": "object",
+          "properties": {
+            "coordinates": {
+              "type": "object",
+              "properties": {
+                "lat": {
+                  "type": "number"
+                },
+                "lng": {
+                  "type": "number"
+                }
+              }
+            },
+            "viewDirection": {
+              "type": "string",
+              "description": "Direction the photo/video was taken"
+            },
+            "locationNotes": {
+              "type": "string",
+              "description": "Additional location context"
+            }
+          }
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "creator": {
+              "type": "string",
+              "description": "Who created the media"
+            },
+            "provider": {
+              "type": "string",
+              "description": "Source institution/archive"
+            },
+            "collection": {
+              "type": "string",
+              "description": "Collection or fond information"
+            },
+            "rights": {
+              "type": "string",
+              "description": "Copyright/usage rights"
+            },
+            "citation": {
+              "type": "string",
+              "description": "How to cite this media"
+            }
+          }
+        }
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "description": "For then/now comparisons",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["then-now", "timeline", "seasonal"],
+          "description": "Type of comparison"
+        },
+        "pairs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "historical": {
+                "type": "string",
+                "description": "ID of historical media"
+              },
+              "current": {
+                "type": "string",
+                "description": "ID of current media"
+              },
+              "alignmentPoints": {
+                "type": "array",
+                "description": "Points used to align images",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Keywords for searching/filtering"
+    },
+    "stories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "IDs of related stories"
+    }
+  }
+}

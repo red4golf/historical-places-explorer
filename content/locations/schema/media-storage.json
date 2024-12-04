@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Media Storage Strategy",
+  "description": "Storage approach for historical and current media",
+  "type": "object",
+  "properties": {
+    "storage": {
+      "type": "object",
+      "properties": {
+        "local": {
+          "type": "object",
+          "description": "Local development and testing storage",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Base path for local storage"
+            },
+            "maxSize": {
+              "type": "string",
+              "description": "Maximum size for local development"
+            }
+          }
+        },
+        "cloud": {
+          "type": "object",
+          "description": "Cloud storage for production",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "enum": ["s3", "cloudinary", "backblaze"],
+              "description": "Cloud storage provider"
+            },
+            "optimizations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["thumbnail", "preview", "full", "original"]
+                  },
+                  "maxWidth": {
+                    "type": "number"
+                  },
+                  "quality": {
+                    "type": "number"
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": ["jpg", "webp", "avif"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "caching": {
+          "type": "object",
+          "properties": {
+            "strategy": {
+              "type": "string",
+              "enum": ["cdn", "browser", "progressive"]
+            },
+            "duration": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

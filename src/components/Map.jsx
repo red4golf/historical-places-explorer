@@ -1,67 +1,48 @@
-import React from 'react';
-import Map, { Marker, Popup } from 'react-map-gl';
-import { useLocation } from '../contexts/LocationContext';
+import React, { useEffect, useRef } from 'react';
+import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-function MapView() {
-  const [viewport, setViewport] = React.useState({
-    latitude: 47.6262,
-    longitude: -122.5212,
-    zoom: 11
-  });
+// Note: Replace with your actual Mapbox token
+mapboxgl.accessToken = 'your-mapbox-token';
 
-  const { locations, selectedLocation, setSelectedLocation } = useLocation();
+const Map = ({ locations, currentLocation }) => {
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+
+  useEffect(() => {
+    if (map.current) return;
+
+    // Initialize map centered on Bainbridge Island
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/outdoors-v12',
+      center: [-122.5199, 47.6262],
+      zoom: 12
+    });
+
+    // Add navigation controls
+    map.current.addControl(new mapboxgl.NavigationControl());
+  }, []);
+
+  // Update markers when locations change
+  useEffect(() => {
+    if (!map.current || !currentLocation) return;
+
+    // Add marker for current location
+    new mapboxgl.Marker({ color: '#FF0000' })
+      .setLngLat([currentLocation.lng, currentLocation.lat])
+      .addTo(map.current);
+
+    // Center map on new location
+    map.current.flyTo({
+      center: [currentLocation.lng, currentLocation.lat],
+      zoom: 15
+    });
+  }, [currentLocation]);
 
   return (
-    <Map
-      {...viewport}
-      onMove={evt => setViewport(evt.viewState)}
-      style={{ width: '100%', height: '100%' }}
-      mapStyle="mapbox://styles/mapbox/outdoors-v12"
-      mapboxAccessToken={process.env.VITE_MAPBOX_TOKEN}
-    >
-      {locations.map(location => (
-        <Marker
-          key={location.id}
-          latitude={location.coordinates.lat}
-          longitude={location.coordinates.lng}
-          onClick={() => setSelectedLocation(location)}
-        >
-          <div className="cursor-pointer">
-            <Pin />
-          </div>
-        </Marker>
-      ))}
-
-      {selectedLocation && (
-        <Popup
-          latitude={selectedLocation.coordinates.lat}
-          longitude={selectedLocation.coordinates.lng}
-          onClose={() => setSelectedLocation(null)}
-          closeButton={true}
-          closeOnClick={false}
-          offsetTop={-30}
-        >
-          <div className="p-2">
-            <h3 className="font-bold">{selectedLocation.name}</h3>
-            <p className="text-sm">{selectedLocation.shortDescription}</p>
-          </div>
-        </Popup>
-      )}
-    </Map>
+    <div ref={mapContainer} className="w-full h-full" />
   );
-}
+};
 
-function Pin() {
-  return (
-    <svg
-      className="w-6 h-6 text-blue-500"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-    >
-      <path fillRule="evenodd" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-    </svg>
-  );
-}
-
-export default MapView;
+export default Map;

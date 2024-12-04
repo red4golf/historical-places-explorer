@@ -1,0 +1,76 @@
+{
+  "id": "port-blakely-mill",
+  "name": {
+    "current": "Port Blakely Mill Site",
+    "historical": [
+      "Port Blakely Lumber Manufacturing Company",
+      "Port Blakely Mill Company"
+    ]
+  },
+  "location": {
+    "coordinates": {
+      "lat": 47.5934,
+      "lng": -122.5164
+    },
+    "address": {
+      "current": "Port Blakely, Bainbridge Island, WA 98110",
+      "historical": [
+        {
+          "address": "Port Blakely, Kitsap County, Washington Territory",
+          "period": "1864-1889"
+        }
+      ]
+    }
+  },
+  "timeframes": [
+    {
+      "period": "1864-1922",
+      "significance": "Active mill operations - one of the world's largest sawmills",
+      "keyEvents": [
+        {
+          "date": "1864",
+          "event": "Mill establishment by Captain William Renton"
+        },
+        {
+          "date": "1907",
+          "event": "Peak production year"
+        },
+        {
+          "date": "1922",
+          "event": "Mill closure"
+        }
+      ]
+    },
+    {
+      "period": "1922-present",
+      "significance": "Historical site and cultural landscape",
+      "keyEvents": [
+        {
+          "date": "1978",
+          "event": "Site added to local historic register"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "summary": "Former site of one of the world's largest sawmills, operating from 1864 to 1922. The Port Blakely Mill was a significant industrial and cultural center, employing a diverse workforce including Japanese immigrants.",
+    "stories": [
+      {
+        "title": "The Rise of Port Blakely Mill",
+        "file": "stories/port-blakely-mill-history.md",
+        "contributor": {
+          "name": "Charles Einarson",
+          "verified": true
+        }
+      },
+      {
+        "title": "Port Blakely's Japanese Community",
+        "file": "stories/japanese-community.md",
+        "contributor": {
+          "name": "Charles Einarson",
+          "verified": true
+        }
+      }
+    ]
+  }
+}

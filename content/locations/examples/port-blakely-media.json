@@ -1,0 +1,89 @@
+{
+  "id": "pb-mill-comparison-1890",
+  "mediaType": "comparison",
+  "content": {
+    "title": "Port Blakely Mill - 1890 vs Present",
+    "files": [
+      {
+        "path": "/media/historical/pb-mill-1890.jpg",
+        "type": "jpg",
+        "size": "2400x1600",
+        "resolution": "300dpi"
+      },
+      {
+        "path": "/media/current/pb-mill-2024.jpg",
+        "type": "jpg",
+        "size": "3000x2000",
+        "resolution": "300dpi"
+      }
+    ],
+    "thumbnail": "/media/thumbnails/pb-mill-comparison-thumb.jpg"
+  },
+  "metadata": {
+    "date": {
+      "captured": {
+        "historical": "1890",
+        "current": "2024-01-15"
+      },
+      "period": "Mill Operations",
+      "uncertainty": "Historical image dated to circa 1890"
+    },
+    "location": {
+      "coordinates": {
+        "lat": 47.5934,
+        "lng": -122.5164
+      },
+      "viewDirection": "Northeast",
+      "locationNotes": "Taken from approximately the same position on the beach at low tide"
+    },
+    "source": {
+      "creator": {
+        "historical": "Unknown",
+        "current": "Charles Einarson"
+      },
+      "provider": {
+        "historical": "Bainbridge Island Historical Museum",
+        "current": "Historical Places Explorer Project"
+      },
+      "collection": {
+        "historical": "Port Blakely Mill Collection",
+        "current": "Contemporary Documentation Project"
+      },
+      "rights": "Historical image: Public Domain, Current image: CC BY-SA 4.0",
+      "citation": "Historical image courtesy of Bainbridge Island Historical Museum, Port Blakely Mill Collection. Contemporary image © 2024 Historical Places Explorer Project."
+    }
+  },
+  "comparison": {
+    "type": "then-now",
+    "pairs": [
+      {
+        "historical": "pb-mill-1890",
+        "current": "pb-mill-2024",
+        "alignmentPoints": [
+          {
+            "x": 0.45,
+            "y": 0.65,
+            "description": "Mill foundation corner"
+          },
+          {
+            "x": 0.75,
+            "y": 0.35,
+            "description": "Blakely Harbor headland"
+          }
+        ]
+      }
+    ]
+  },
+  "tags": [
+    "mill",
+    "industrial",
+    "waterfront",
+    "then-now",
+    "Port Blakely",
+    "1890s"
+  ],
+  "stories": [
+    "port-blakely-mill-history",
+    "mill-operations"
+  ]
+}

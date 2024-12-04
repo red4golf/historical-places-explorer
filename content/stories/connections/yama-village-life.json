@@ -1,0 +1,78 @@
+{
+  "id": "yama-village-life",
+  "type": "cultural",
+  "connections": {
+    "locations": [
+      {
+        "id": "yama-village",
+        "relationship": "primary",
+        "coordinates": {
+          "lat": 47.5920,
+          "lng": -122.5170
+        },
+        "relevantFeatures": [
+          "foundation-stones",
+          "garden-terraces",
+          "cherry-trees",
+          "artifacts"
+        ]
+      },
+      {
+        "id": "port-blakely-mill",
+        "relationship": "related",
+        "coordinates": {
+          "lat": 47.5934,
+          "lng": -122.5164
+        },
+        "relevantFeatures": [
+          "employment-site",
+          "economic-center"
+        ]
+      }
+    ],
+    "timePeriods": [
+      {
+        "period": "1883-1890",
+        "importance": "primary",
+        "events": [
+          {
+            "date": "1883",
+            "description": "First Japanese workers arrive"
+          },
+          {
+            "date": "1890",
+            "description": "Village formally established"
+          }
+        ]
+      },
+      {
+        "period": "1890-1922",
+        "importance": "primary",
+        "events": [
+          {
+            "date": "1900",
+            "description": "Population reaches peak of over 300"
+          },
+          {
+            "date": "1922",
+            "description": "Village abandoned after mill closure"
+          }
+        ]
+      }
+    ],
+    "relatedStories": [
+      {
+        "id": "port-blakely-mill-history",
+        "connection": "parallel",
+        "description": "The mill that employed Yama's residents"
+      }
+    ],
+    "themes": [
+      "Immigration",
+      "Japanese-American History",
+      "Community Life",
+      "Cultural Heritage",
+      "Industrial History"
+    ]
+  }
+}

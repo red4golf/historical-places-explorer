@@ -1,0 +1,144 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Point of Interest Schema",
+  "description": "Core schema for historical Points of Interest",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "location",
+    "timeframes",
+    "content"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the POI"
+    },
+    "name": {
+      "type": "object",
+      "required": ["current"],
+      "properties": {
+        "current": {
+          "type": "string",
+          "description": "Current name of the location"
+        },
+        "historical": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Previous names through history"
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "required": ["coordinates", "address"],
+      "properties": {
+        "coordinates": {
+          "type": "object",
+          "required": ["lat", "lng"],
+          "properties": {
+            "lat": {
+              "type": "number"
+            },
+            "lng": {
+              "type": "number"
+            }
+          }
+        },
+        "address": {
+          "type": "object",
+          "required": ["current"],
+          "properties": {
+            "current": {
+              "type": "string",
+              "description": "Current physical address"
+            },
+            "historical": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string"
+                  },
+                  "period": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "timeframes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["period", "significance"],
+        "properties": {
+          "period": {
+            "type": "string",
+            "description": "Time period (e.g., '1864-1922')"
+          },
+          "significance": {
+            "type": "string",
+            "description": "Brief description of historical significance"
+          },
+          "keyEvents": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string"
+                },
+                "event": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "required": ["summary"],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "Brief description of the POI"
+        },
+        "stories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "file": {
+                "type": "string"
+              },
+              "contributor": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "verified": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

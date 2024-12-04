@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Location Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin: 0; padding: 0; height: 100vh; width: 100vw; }
+        #map { position: absolute; top: 120px; bottom: 0; width: 100%; }
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+        .status {
+            padding: 10px;
+            margin-top: 60px;
+            background: #f0f0f0;
+            font-size: 12px;
+            position: fixed;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        #coordinates {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button onclick="getLocation()">Get Location</button>
+        <div id="coordinates">No location yet</div>
+    </div>
+    <div id="status" class="status">Ready to get location...</div>
+    <div id="map"></div>
+
+    <script>
+        // Replace with your Mapbox token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2VpbmFyc29uIiwiYSI6ImNtNGEybmN0ajAzOWQycXE1M2VibWNiZjkifQ.7JrNDHO9geEP_L9UT4hGgg';
+
+        let map;
+        let currentMarker = null;
+        const statusDiv = document.getElementById('status');
+
+        // Initialize map
+        try {
+            map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/outdoors-v12',
+                center: [-122.5199, 47.6262],
+                zoom: 12
+            });
+            
+            map.addControl(new mapboxgl.NavigationControl());
+            
+            statusDiv.innerHTML += '<br>Map initialized successfully';
+        } catch (e) {
+            statusDiv.innerHTML += '<br>Error initializing map: ' + e.message;
+        }
+
+        function getLocation() {
+            statusDiv.innerHTML = 'Requesting location...';
+            
+            if (!navigator.geolocation) {
+                statusDiv.innerHTML = 'Geolocation not supported by your browser';
+                return;
+            }
+
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            };
+
+            navigator.geolocation.getCurrentPosition(
+                function success(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    const accuracy = position.coords.accuracy;
+                    
+                    statusDiv.innerHTML = `Location received! Accuracy: ${accuracy.toFixed(1)}m`;
+                    
+                    document.getElementById('coordinates').innerHTML = 
+                        `Lat: ${lat.toFixed(6)}<br>Lng: ${lng.toFixed(6)}`;
+
+                    try {
+                        if (currentMarker) {
+                            currentMarker.remove();
+                        }
+
+                        currentMarker = new mapboxgl.Marker({ color: '#FF0000' })
+                            .setLngLat([lng, lat])
+                            .addTo(map);
+
+                        map.flyTo({
+                            center: [lng, lat],
+                            zoom: 15
+                        });
+
+                        // Store location
+                        const captures = JSON.parse(localStorage.getItem('captures') || '[]');
+                        captures.push({
+                            lat,
+                            lng,
+                            accuracy,
+                            timestamp: new Date().toISOString()
+                        });
+                        localStorage.setItem('captures', JSON.stringify(captures));
+                        
+                        statusDiv.innerHTML += '<br>Location marked on map';
+                    } catch (e) {
+                        statusDiv.innerHTML += '<br>Error updating map: ' + e.message;
+                    }
+                },
+                function error(err) {
+                    let errorMessage = 'Location error: ';
+                    switch(err.code) {
+                        case err.PERMISSION_DENIED:
+                            errorMessage += 'Permission denied. Please enable location services for Safari in your iPhone settings.';
+                            break;
+                        case err.POSITION_UNAVAILABLE:
+                            errorMessage += 'Location unavailable. Please check your GPS signal.';
+                            break;
+                        case err.TIMEOUT:
+                            errorMessage += 'Request timed out. Please try again.';
+                            break;
+                        default:
+                            errorMessage += err.message;
+                    }
+                    statusDiv.innerHTML = errorMessage;
+                },
+                options
+            );
+        }
+    </script>
+</body>
+</html>

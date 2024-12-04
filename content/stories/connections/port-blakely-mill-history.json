@@ -1,0 +1,89 @@
+{
+  "id": "port-blakely-mill-history",
+  "type": "primary",
+  "connections": {
+    "locations": [
+      {
+        "id": "port-blakely-mill",
+        "relationship": "primary",
+        "coordinates": {
+          "lat": 47.5934,
+          "lng": -122.5164
+        },
+        "relevantFeatures": [
+          "mill-pilings",
+          "harbor",
+          "mill-site",
+          "creek"
+        ]
+      },
+      {
+        "id": "port-blakely-cemetery",
+        "relationship": "related",
+        "coordinates": {
+          "lat": 47.5954,
+          "lng": -122.5144
+        },
+        "relevantFeatures": [
+          "worker-graves",
+          "community-memorial"
+        ]
+      }
+    ],
+    "timePeriods": [
+      {
+        "period": "1864-1880",
+        "importance": "primary",
+        "events": [
+          {
+            "date": "1864",
+            "description": "William Renton establishes mill"
+          }
+        ]
+      },
+      {
+        "period": "1880-1907",
+        "importance": "primary",
+        "events": [
+          {
+            "date": "1880",
+            "description": "International shipping routes established"
+          }
+        ]
+      },
+      {
+        "period": "1907-1922",
+        "importance": "primary",
+        "events": [
+          {
+            "date": "1907",
+            "description": "Peak production year"
+          },
+          {
+            "date": "1922",
+            "description": "Mill closure"
+          }
+        ]
+      }
+    ],
+    "relatedStories": [
+      {
+        "id": "japanese-community",
+        "connection": "parallel",
+        "description": "Story of the Japanese mill workers and their community"
+      },
+      {
+        "id": "sf-earthquake-lumber",
+        "connection": "reference",
+        "description": "Port Blakely's role in rebuilding San Francisco"
+      }
+    ],
+    "themes": [
+      "Industrial Development",
+      "Maritime History",
+      "Immigration",
+      "Economic Growth",
+      "Multicultural Community"
+    ]
+  }
+}

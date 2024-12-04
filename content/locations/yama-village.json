@@ -1,0 +1,52 @@
+{
+  "id": "yama-village",
+  "name": {
+    "current": "Yama Village Site",
+    "historical": [
+      "Yama Village",
+      "Japanese Village"
+    ]
+  },
+  "location": {
+    "coordinates": {
+      "lat": 47.5920,
+      "lng": -122.5170
+    },
+    "address": {
+      "current": "Yama Beach, Bainbridge Island, WA 98110"
+    }
+  },
+  "timeframes": [
+    {
+      "period": "1883-1922",
+      "significance": "Active Japanese mill worker community",
+      "keyEvents": [
+        {
+          "date": "1883",
+          "event": "First Japanese workers arrive at Port Blakely"
+        },
+        {
+          "date": "1890",
+          "event": "Yama village established"
+        },
+        {
+          "date": "1922",
+          "event": "Village abandoned after mill closure"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "summary": "Site of the historic Japanese village of Yama, which housed workers for the Port Blakely Mill. Once home to over 300 residents, it was the largest Japanese community in the Puget Sound region.",
+    "stories": [
+      {
+        "title": "Life in Yama Village",
+        "file": "stories/yama-village-life.md",
+        "contributor": {
+          "name": "Charles Einarson",
+          "verified": true
+        }
+      }
+    ]
+  }
+}
