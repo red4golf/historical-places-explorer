@@ -1,39 +1,32 @@
-# Historical Places Explorer
+# Historical Explorer Project
 
-A tool for discovering and experiencing local history through location-based storytelling.
-
-## Project Overview
-
-This project aims to create an interactive platform that connects physical locations with their historical significance, making local history more accessible and engaging for everyone.
-
-### Key Features
-
-- Location-based historical stories and information
-- Interactive map interface
-- Historical data aggregation from multiple sources
-- Walking tour generation
-- Support for multimedia content (photos, audio, documents)
-
-## Project Structure
+## Local Development Structure
 
 ```
-/src
-  /components     # React components
-  /data          # Data processing and management
-  /services      # External service integrations
-  /utils         # Helper functions
-/docs           # Documentation
-/scripts        # Data collection and processing scripts
+/historical-explorer
+    /src
+        /data           # Local JSON data storage
+        /components     # React components
+        /utils         # Helper functions
+    /content
+        /stories       # Markdown files for stories
+        /media         # Images and other media
+        /locations     # Location data files
+    /docs             # Project documentation
 ```
 
 ## Getting Started
 
-TBD
+1. Clone this repository
+2. Install dependencies
+3. Run local development server
+4. Add content to /content directory
 
-## Contributing
+## Development Guidelines
 
-TBD
-
-## License
-
-TBD
+- Store all content as plain text/markdown files
+- Keep media files in appropriate /content/media subdirectories
+- Use descriptive filenames
+- Include metadata in frontmatter
+- Regular local backups
+- Push to GitHub for major versions

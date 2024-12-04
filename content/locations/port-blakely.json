@@ -1,0 +1,32 @@
+{
+  "id": "port-blakely-mill",
+  "name": "Port Blakely Mill Site",
+  "coordinates": {
+    "lat": 47.5934,
+    "lng": -122.5164
+  },
+  "shortDescription": "Site of one of the world's largest sawmills (1864-1922)",
+  "historicalPeriods": ["1864-1922"],
+  "stories": [
+    "port-blakely-mill-history.md",
+    "japanese-community.md"
+  ],
+  "media": {
+    "images": [
+      {
+        "filename": "mill-1890.jpg",
+        "caption": "Port Blakely Mill circa 1890",
+        "credit": "Bainbridge Island Historical Museum"
+      }
+    ],
+    "documents": [
+      {
+        "filename": "newspaper-1880.pdf",
+        "description": "Port Blakely Herald article about mill expansion"
+      }
+    ]
+  },
+  "tags": ["industry", "lumber", "maritime", "Japanese-American history"],
+  "relatedLocations": ["japanese-community-hall", "port-blakely-cemetery"],
+  "walkingTourOrder": 1
+}
