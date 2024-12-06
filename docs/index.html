@@ -42,6 +42,9 @@
             margin: 5px 0;
             font-size: 14px;
         }
+        .mapboxgl-popup {
+            max-width: 200px;
+        }
     </style>
 </head>
 <body>
@@ -55,6 +58,35 @@
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoiY2VpbmFyc29uIiwiYSI6ImNtNGEybmN0ajAzOWQycXE1M2VibWNiZjkifQ.7JrNDHO9geEP_L9UT4hGgg';
 
+        // Historical locations data
+        const historicalPlaces = [
+            {
+                name: "Port Blakely Mill Site",
+                coordinates: [-122.5164, 47.5934],
+                description: "Once one of the world's largest sawmills (1864-1922)"
+            },
+            {
+                name: "Fort Ward",
+                coordinates: [-122.5264, 47.5752],
+                description: "Former coastal defense fort, now a state park"
+            },
+            {
+                name: "Japanese American Exclusion Memorial",
+                coordinates: [-122.5651, 47.6234],
+                description: "Commemorates the 1942 exclusion of Bainbridge Island's Japanese American community"
+            },
+            {
+                name: "Restoration Point",
+                coordinates: [-122.4874, 47.5893],
+                description: "Named by Captain George Vancouver in 1792, site of early European contact"
+            },
+            {
+                name: "Winslow Historical Core",
+                coordinates: [-122.5204, 47.6262],
+                description: "Historic downtown area including the Winslow Way buildings and early ferry dock location"
+            }
+        ];
+
         let map;
         let currentMarker = null;
         const statusDiv = document.getElementById('status');
@@ -63,12 +95,30 @@
         try {
             map = new mapboxgl.Map({
                 container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v12',  // Changed to streets style
+                style: 'mapbox://styles/mapbox/streets-v12',
                 center: [-122.5199, 47.6262],
                 zoom: 12
             });
             
             map.addControl(new mapboxgl.NavigationControl());
+            
+            // Add historical markers when map loads
+            map.on('load', function() {
+                historicalPlaces.forEach(place => {
+                    const popup = new mapboxgl.Popup({ offset: 25 })
+                        .setHTML(
+                            `<h3>${place.name}</h3>
+                            <p>${place.description}</p>`
+                        );
+
+                    new mapboxgl.Marker({ color: '#4169E1' })
+                        .setLngLat(place.coordinates)
+                        .setPopup(popup)
+                        .addTo(map);
+                });
+                
+                statusDiv.innerHTML = 'Map loaded successfully';
+            });
             
             statusDiv.innerHTML += '<br>Map initialized successfully';
         } catch (e) {
@@ -153,11 +203,6 @@
         // Add error handler for map load failures
         map.on('error', function(e) {
             statusDiv.innerHTML = 'Map error: ' + e.error.message;
-        });
-
-        // Add load success handler
-        map.on('load', function() {
-            statusDiv.innerHTML = 'Map loaded successfully';
         });
     </script>
 </body>
