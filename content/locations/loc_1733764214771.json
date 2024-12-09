@@ -1,0 +1,22 @@
+{
+  "id": "loc_1733764214771",
+  "name": "Home",
+  "coordinates": {
+    "lat": 47.62808945301135,
+    "lng": -122.52677003511589
+  },
+  "shortDescription": "Testing",
+  "historicalSignificance": "1950's home. Land sold for community build.",
+  "timePeriod": "1951-1970",
+  "sources": [],
+  "photos": [
+    {
+      "filename": "4-1733764214755-796385813.png",
+      "path": "/content/media/image/4-1733764214755-796385813.png",
+      "caption": ""
+    }
+  ],
+  "relatedLocationIds": [],
+  "submittedAt": "2024-12-09T17:10:14.795Z",
+  "approvedAt": "2024-12-09T20:11:14.697Z"
+}

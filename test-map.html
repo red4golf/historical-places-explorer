@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Location Test</title>
+    <title>Historical Places Explorer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
@@ -42,14 +42,35 @@
             margin: 5px 0;
             font-size: 14px;
         }
+        .mapboxgl-popup {
+            max-width: 300px;
+            font-family: Arial, sans-serif;
+        }
+        .mapboxgl-popup-content {
+            padding: 15px;
+        }
+        .popup-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .popup-description {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .popup-period {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
     <div class="controls">
-        <button onclick="getLocation()">Get Location</button>
+        <button onclick="getLocation()">Get My Location</button>
         <div id="coordinates">No location yet</div>
     </div>
-    <div id="status" class="status">Ready to get location...</div>
+    <div id="status" class="status">Loading historical places...</div>
     <div id="map"></div>
 
     <script>
@@ -59,6 +80,28 @@
         let map;
         let currentMarker = null;
         const statusDiv = document.getElementById('status');
+        const historicalLocations = [
+            {
+                "id": "port-blakely-mill",
+                "name": "Port Blakely Mill Site",
+                "coordinates": {
+                    "lat": 47.5934,
+                    "lng": -122.5164
+                },
+                "shortDescription": "Site of one of the world's largest sawmills (1864-1922)",
+                "historicalPeriods": ["1864-1922"]
+            },
+            {
+                "id": "yama-village",
+                "name": "Yama Village",
+                "coordinates": {
+                    "lat": 47.5912,
+                    "lng": -122.5152
+                },
+                "shortDescription": "Historic Japanese immigrant village that flourished near Port Blakely Mill",
+                "historicalPeriods": ["1883-1922"]
+            }
+        ];
 
         // Initialize map
         try {
@@ -71,9 +114,32 @@
             
             map.addControl(new mapboxgl.NavigationControl());
             
-            statusDiv.innerHTML += '<br>Map initialized successfully';
+            // Add historical markers once the map is loaded
+            map.on('load', () => {
+                addHistoricalMarkers();
+                statusDiv.innerHTML = 'Historical places loaded successfully';
+            });
+
         } catch (e) {
             statusDiv.innerHTML += '<br>Error initializing map: ' + e.message;
+        }
+
+        function addHistoricalMarkers() {
+            historicalLocations.forEach(location => {
+                // Create a popup
+                const popup = new mapboxgl.Popup({ offset: 25 })
+                    .setHTML(`
+                        <div class="popup-title">${location.name}</div>
+                        <div class="popup-description">${location.shortDescription}</div>
+                        <div class="popup-period">${location.historicalPeriods.join(', ')}</div>
+                    `);
+
+                // Create and add the marker with a brown color for historical sites
+                new mapboxgl.Marker({ color: '#8B4513' })
+                    .setLngLat([location.coordinates.lng, location.coordinates.lat])
+                    .setPopup(popup)
+                    .addTo(map);
+            });
         }
 
         function getLocation() {
@@ -106,8 +172,13 @@
                             currentMarker.remove();
                         }
 
+                        // Create a popup for user location
+                        const popup = new mapboxgl.Popup({ offset: 25 })
+                            .setHTML('<div class="popup-title">Your Location</div>');
+
                         currentMarker = new mapboxgl.Marker({ color: '#FF0000' })
                             .setLngLat([lng, lat])
+                            .setPopup(popup)
                             .addTo(map);
 
                         map.flyTo({

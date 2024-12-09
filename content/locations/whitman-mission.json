@@ -1,0 +1,11 @@
+{
+    "id": "whitman-mission",
+    "name": "Whitman Mission National Historic Site",
+    "coordinates": {
+    "lat": 46.0422,
+    "lng": -118.4628
+    },
+    "shortDescription": "Site of the 1847 Whitman massacre and early American settlement",
+    "historicalPeriods": ["1836-1847"],
+    "tags": ["missionary", "native american", "frontier"]
+    }

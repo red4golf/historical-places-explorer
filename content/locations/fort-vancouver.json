@@ -1,0 +1,11 @@
+{
+    "id": "fort-vancouver",
+    "name": "Fort Vancouver National Historic Site",
+    "coordinates": {
+    "lat": 45.6252,
+    "lng": -122.6617
+    },
+    "shortDescription": "Reconstructed 19th-century fur trading post with living history demonstrations",
+    "historicalPeriods": ["1824-1866"],
+    "tags": ["fur trade", "military", "colonial"]
+    }
