@@ -1,0 +1,21 @@
+{
+    "id": "manhattan-project",
+    "name": "Manhattan Project National Historical Park - Hanford Site",
+    "coordinates": {
+        "lat": 46.5505,
+        "lng": -119.4880
+    },
+    "shortDescription": "Site of plutonium production for the first nuclear weapons",
+    "historicalPeriods": ["1943-1945"],
+    "tags": ["world war II", "science", "cold war"],
+    "content": {
+        "stories": [{
+            "file": "manhattan-project-hanford.md",
+            "title": "Hanford and the Atomic Age",
+            "contributor": {
+                "name": "Historical Places Explorer",
+                "verified": true
+            }
+        }]
+    }
+}

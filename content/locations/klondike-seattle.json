@@ -1,0 +1,21 @@
+{
+    "id": "klondike-seattle",
+    "name": "Klondike Gold Rush National Historical Park - Seattle Unit",
+    "coordinates": {
+        "lat": 47.5987,
+        "lng": -122.3318
+    },
+    "shortDescription": "Museum exploring Seattle's role in the Klondike Gold Rush",
+    "historicalPeriods": ["1897-1898"],
+    "tags": ["gold rush", "urban history", "economic boom"],
+    "content": {
+        "stories": [{
+            "file": "klondike-seattle-gold-rush.md",
+            "title": "Gateway to the Klondike Gold Rush",
+            "contributor": {
+                "name": "Historical Places Explorer",
+                "verified": true
+            }
+        }]
+    }
+}

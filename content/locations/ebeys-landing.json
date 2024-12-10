@@ -1,0 +1,21 @@
+{
+    "id": "ebeys-landing",
+    "name": "Ebey's Landing National Historical Reserve",
+    "coordinates": {
+        "lat": 48.2119,
+        "lng": -122.6780
+    },
+    "shortDescription": "Preserved rural landscape showcasing Pacific Northwest pioneer life",
+    "historicalPeriods": ["1850s-present"],
+    "tags": ["agriculture", "settlement", "coastal"],
+    "content": {
+        "stories": [{
+            "file": "ebeys-landing-pioneer-legacy.md",
+            "title": "Where Pioneers Met Puget Sound",
+            "contributor": {
+                "name": "Historical Places Explorer",
+                "verified": true
+            }
+        }]
+    }
+}

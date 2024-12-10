@@ -1,0 +1,21 @@
+{
+    "id": "fort-casey",
+    "name": "Fort Casey Historical State Park",
+    "coordinates": {
+        "lat": 48.1639,
+        "lng": -122.6769
+    },
+    "shortDescription": "Former military installation with historic lighthouse and coastal defense batteries",
+    "historicalPeriods": ["1890s-1940s"],
+    "tags": ["military history", "coastal defense", "lighthouse"],
+    "content": {
+        "stories": [{
+            "file": "Fort-Casey-Sentinel-of-Puget-Sound.md",
+            "title": "Sentinel of Puget Sound",
+            "contributor": {
+                "name": "Historical Places Explorer",
+                "verified": true
+            }
+        }]
+    }
+}

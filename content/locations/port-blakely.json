@@ -1,11 +1,21 @@
 {
-  "id": "port-blakely",
-  "name": "Port Blakely Mill Site",
-  "coordinates": {
-    "lat": 47.5963,
-    "lng": -122.5107
-  },
-  "shortDescription": "Site of the historic Port Blakely Mill, once the world's largest sawmill",
-  "historicalPeriods": ["1864-1922"],
-  "tags": ["mill", "industry", "maritime"]
+    "id": "port-blakely",
+    "name": "Port Blakely Mill Site",
+    "coordinates": {
+        "lat": 47.5963,
+        "lng": -122.5107
+    },
+    "shortDescription": "Site of the historic Port Blakely Mill, once the world's largest sawmill",
+    "historicalPeriods": ["1864-1922"],
+    "tags": ["mill", "industry", "maritime"],
+    "content": {
+        "stories": [{
+            "file": "port-blakely-mill-history.md",
+            "title": "From Forest to Fortune",
+            "contributor": {
+                "name": "Charles Einarson",
+                "verified": true
+            }
+        }]
+    }
 }

@@ -1,0 +1,21 @@
+{
+    "id": "lewis-and-clark",
+    "name": "Lewis and Clark National Historical Park",
+    "coordinates": {
+        "lat": 46.1324,
+        "lng": -123.8811
+    },
+    "shortDescription": "Park commemorating the Lewis and Clark Expedition's arrival at the Pacific",
+    "historicalPeriods": ["1805-1806"],
+    "tags": ["exploration", "westward expansion", "native american"],
+    "content": {
+        "stories": [{
+            "file": "lewis-and-clark-pacific.md",
+            "title": "Winter at the Pacific",
+            "contributor": {
+                "name": "Historical Places Explorer",
+                "verified": true
+            }
+        }]
+    }
+}
