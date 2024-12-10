@@ -2,10 +2,20 @@
     "id": "whitman-mission",
     "name": "Whitman Mission National Historic Site",
     "coordinates": {
-    "lat": 46.0422,
-    "lng": -118.4628
+        "lat": 46.0422,
+        "lng": -118.4628
     },
     "shortDescription": "Site of the 1847 Whitman massacre and early American settlement",
     "historicalPeriods": ["1836-1847"],
-    "tags": ["missionary", "native american", "frontier"]
+    "tags": ["missionary", "native american", "frontier"],
+    "content": {
+        "stories": [{
+            "file": "whitman-mission-turning-point.md",
+            "title": "A Complex Legacy",
+            "contributor": {
+                "name": "Historical Places Explorer",
+                "verified": true
+            }
+        }]
     }
+}

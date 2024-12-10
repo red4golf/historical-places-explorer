@@ -41,7 +41,7 @@
     "stories": [
       {
         "title": "Life in Yama Village",
-        "file": "stories/yama-village-life.md",
+        "file": "yama-village-life.md",
         "contributor": {
           "name": "Charles Einarson",
           "verified": true

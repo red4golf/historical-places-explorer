@@ -18,17 +18,6 @@ const app = express();
 // Add JSON body parsing
 app.use(express.json());
 
-// Serve the static files directly
-app.use(express.static(path.join(__dirname, 'dist')));
-app.use('/assets', express.static(path.join(__dirname, 'dist', 'assets')));
-
-// Serve media files
-app.use('/content/media', express.static(path.join(__dirname, 'content', 'media')));
-
-// Add the route handlers
-app.use('/api', draftLocationsRouter);
-app.use('/api', storiesRouter);
-
 // Configure multer for media uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -45,61 +34,24 @@ const storage = multer.diskStorage({
     }
 });
 
-const VALID_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
-const VALID_DOCUMENT_TYPES = [
-    'application/pdf',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'text/plain',
-    'text/markdown'
-];
-
-const upload = multer({ 
-    storage,
-    limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB limit
-    },
-    fileFilter: (req, file, cb) => {
-        const type = req.body.type || 'image';
-        if (type === 'image' && !VALID_IMAGE_TYPES.includes(file.mimetype)) {
-            cb(new Error('Invalid image type. Use JPG, PNG, or GIF'));
-            return;
-        }
-        if (type === 'document' && !VALID_DOCUMENT_TYPES.includes(file.mimetype)) {
-            cb(new Error('Invalid document type. Use PDF, DOC, DOCX, TXT, or MD'));
-            return;
-        }
-        cb(null, true);
-    }
-});
+const upload = multer({ storage });
 
 // API Routes
-// Locations API endpoints
 const LOCATIONS_DIR = path.join(__dirname, 'content', 'locations');
 
-async function getAllLocations() {
-    const files = await fs.readdir(LOCATIONS_DIR);
-    return Promise.all(
-        files
-            .filter(file => file.endsWith('.json'))
-            .map(async file => {
-                const content = await fs.readFile(path.join(LOCATIONS_DIR, file), 'utf8');
-                return JSON.parse(content);
-            })
-    );
-}
-
-async function saveLocation(locationData) {
-    const filePath = path.join(LOCATIONS_DIR, `${locationData.id}.json`);
-    await fs.writeFile(filePath, JSON.stringify(locationData, null, 2));
-}
-
-// API Routes
+// Get all locations
 app.get('/api/locations', async (req, res) => {
     try {
-        // Ensure the locations directory exists
         await fs.mkdir(LOCATIONS_DIR, { recursive: true });
-        const locations = await getAllLocations();
+        const files = await fs.readdir(LOCATIONS_DIR);
+        const locations = await Promise.all(
+            files
+                .filter(file => file.endsWith('.json') && !file.startsWith('.'))
+                .map(async file => {
+                    const content = await fs.readFile(path.join(LOCATIONS_DIR, file), 'utf8');
+                    return JSON.parse(content);
+                })
+        );
         res.json(locations);
     } catch (error) {
         console.error('Error loading locations:', error);
@@ -107,6 +59,7 @@ app.get('/api/locations', async (req, res) => {
     }
 });
 
+// Get a single location
 app.get('/api/locations/:id', async (req, res) => {
     try {
         const filePath = path.join(LOCATIONS_DIR, `${req.params.id}.json`);
@@ -121,78 +74,42 @@ app.get('/api/locations/:id', async (req, res) => {
     }
 });
 
-app.post('/api/locations/:id', async (req, res) => {
+// Add the route handlers
+app.use('/api', draftLocationsRouter);
+app.use('/api', storiesRouter);
+
+// Get a story
+app.get('/api/stories/:filename', async (req, res) => {
     try {
-        await saveLocation(req.body);
-        res.json({ message: 'Location saved successfully' });
+        const storyPath = path.join(__dirname, 'content', 'stories', req.params.filename);
+        console.log('Loading story from:', storyPath);
+        const content = await fs.readFile(storyPath, 'utf-8');
+        res.set('Content-Type', 'text/markdown');
+        res.send(content);
     } catch (error) {
-        res.status(500).json({ error: 'Error saving location: ' + error.message });
+        console.error('Error reading story:', error);
+        res.status(500).json({ error: 'Error loading story' });
     }
 });
 
-app.delete('/api/locations/:id', async (req, res) => {
-    try {
-        const filePath = path.join(LOCATIONS_DIR, `${req.params.id}.json`);
-        await fs.unlink(filePath);
-        res.json({ message: 'Location deleted successfully' });
-    } catch (error) {
-        if (error.code === 'ENOENT') {
-            res.status(404).json({ error: 'Location not found' });
-        } else {
-            res.status(500).json({ error: 'Error deleting location: ' + error.message });
-        }
-    }
-});
-
-// Media handling endpoints
+// Media file upload
 app.post('/api/media/upload', upload.single('file'), (req, res) => {
-    try {
-        if (!req.file) {
-            throw new Error('No file uploaded');
-        }
-        res.json({
-            filename: req.file.filename,
-            path: `/content/media/${req.body.type || 'image'}/${req.file.filename}`
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded' });
     }
+    res.json({
+        filename: req.file.filename,
+        path: `/media/${req.file.filename}`
+    });
 });
 
-// Delete media file
-app.delete('/api/media/:filename', async (req, res) => {
-    try {
-        const filename = req.params.filename;
-        const types = ['image', 'document'];
-        
-        for (const type of types) {
-            const filePath = path.join(__dirname, 'content', 'media', type, filename);
-            try {
-                await fs.access(filePath);
-                await fs.unlink(filePath);
-                return res.json({ message: 'File deleted successfully' });
-            } catch (err) {
-                continue;
-            }
-        }
-        
-        throw new Error('File not found');
-    } catch (error) {
-        res.status(404).json({ error: error.message });
-    }
-});
+// Static file serving
+app.use(express.static(path.join(__dirname, 'dist')));
+app.use('/content/media', express.static(path.join(__dirname, 'content', 'media')));
 
-// This should be the LAST route
+// Catch-all route for client-side routing
 app.get('*', (req, res) => {
-    // Log requested URL for debugging
-    console.log('Requested URL:', req.url);
-    
-    // Determine which HTML file to serve
-    if (req.url.startsWith('/admin')) {
-        res.sendFile(path.join(__dirname, 'dist', 'admin.html'));
-    } else {
-        res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-    }
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 // Start server
@@ -205,22 +122,19 @@ Local: http://localhost:${PORT}
 Network: http://${getLocalIP()}:${PORT}
 
 Server Details:
-- Serving static files from: ${path.join(__dirname, 'dist')}
-- Media files from: ${path.join(__dirname, 'content', 'media')}
 - API routes enabled
-- React routing enabled
+- Static files: ${path.join(__dirname, 'dist')}
+- Media files: ${path.join(__dirname, 'content', 'media')}
+- Stories: ${path.join(__dirname, 'content', 'stories')}
 
 Ready to explore local history!
 `);
 });
 
-// Helper function to get local IP address
 function getLocalIP() {
     const nets = os.networkInterfaces();
-    
     for (const name of Object.keys(nets)) {
         for (const net of nets[name]) {
-            // Skip internal and non-IPv4 addresses
             if (net.family === 'IPv4' && !net.internal) {
                 return net.address;
             }

@@ -2,10 +2,20 @@
     "id": "mount-st-helens",
     "name": "Mount St. Helens National Volcanic Monument",
     "coordinates": {
-    "lat": 46.1912,
-    "lng": -122.1944
+        "lat": 46.1912,
+        "lng": -122.1944
     },
     "shortDescription": "Site of the 1980 volcanic eruption with educational exhibits and hiking trails",
     "historicalPeriods": ["1980-present"],
-    "tags": ["geology", "natural disaster", "ecology"]
+    "tags": ["geology", "natural disaster", "ecology"],
+    "content": {
+        "stories": [{
+            "file": "mount-st-helens-transformation.md",
+            "title": "A Story of Destruction and Renewal",
+            "contributor": {
+                "name": "Historical Places Explorer",
+                "verified": true
+            }
+        }]
     }
+}

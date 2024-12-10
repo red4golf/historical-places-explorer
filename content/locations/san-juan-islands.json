@@ -2,10 +2,20 @@
     "id": "san-juan-islands",
     "name": "San Juan Island National Historical Park",
     "coordinates": {
-    "lat": 48.4620,
-    "lng": -123.0070
+        "lat": 48.4620,
+        "lng": -123.0070
     },
     "shortDescription": "Park commemorating the peaceful resolution of the Pig War border dispute",
     "historicalPeriods": ["1859-1872"],
-    "tags": ["maritime", "military", "diplomacy"]
+    "tags": ["maritime", "military", "diplomacy"],
+    "content": {
+        "stories": [{
+            "file": "san-juan-islands-pig-war.md",
+            "title": "When One Pig Almost Started a War",
+            "contributor": {
+                "name": "Historical Places Explorer",
+                "verified": true
+            }
+        }]
     }
+}

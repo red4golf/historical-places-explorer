@@ -2,10 +2,20 @@
     "id": "fort-vancouver",
     "name": "Fort Vancouver National Historic Site",
     "coordinates": {
-    "lat": 45.6252,
-    "lng": -122.6617
+        "lat": 45.6252,
+        "lng": -122.6617
     },
     "shortDescription": "Reconstructed 19th-century fur trading post with living history demonstrations",
     "historicalPeriods": ["1824-1866"],
-    "tags": ["fur trade", "military", "colonial"]
+    "tags": ["fur trade", "military", "colonial"],
+    "content": {
+        "stories": [{
+            "file": "fort-vancouver-history.md",
+            "title": "Gateway to the Pacific Northwest",
+            "contributor": {
+                "name": "Historical Places Explorer",
+                "verified": true
+            }
+        }]
     }
+}
