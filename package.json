@@ -1,33 +1,45 @@
 {
   "name": "historical-places-explorer",
-  "version": "1.0.0",
-  "description": "Interactive platform for exploring local history",
+  "private": true,
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev:client": "vite",
+    "dev:server": "node server.js",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "build": "vite build",
-    "api": "node server.js",
-    "start": "concurrently \"npm run api\" \"npm run dev\"",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.0.4",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-scroll-area": "^1.0.5",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
-    "lucide-react": "^0.263.1",
+    "lucide-react": "^0.294.0",
     "mapbox-gl": "^2.15.0",
     "multer": "^1.4.5-lts.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-markdown": "^9.0.1"
+    "react-markdown": "^9.0.1",
+    "react-router-dom": "^7.0.2",
+    "remark-gfm": "^4.0.0",
+    "tailwind-merge": "^2.1.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.15",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
-    "autoprefixer": "^10.4.16",
-    "concurrently": "^8.2.2",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.5",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.27",
+    "tailwindcss": "^3.3.3",
     "vite": "^4.4.5"
   }
 }

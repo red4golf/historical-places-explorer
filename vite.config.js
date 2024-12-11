@@ -1,26 +1,15 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-        admin: resolve(__dirname, 'admin.html')
-      }
-    }
-  },
   server: {
     proxy: {
-      '/api': {
-        target: 'http://localhost:3000',
-        changeOrigin: true
-      }
+      '/api': 'http://localhost:3000'
     }
   },
-  base: '/' // This ensures assets are loaded from the correct path
-});
+  // This ensures that all routes are redirected to index.html for client-side routing
+  preview: {
+    port: 5173
+  }
+})
