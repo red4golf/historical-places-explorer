@@ -74,7 +74,6 @@
     <div id="map"></div>
 
     <script>
-        // Replace with your Mapbox token
         mapboxgl.accessToken = 'pk.eyJ1IjoiY2VpbmFyc29uIiwiYSI6ImNtNGEybmN0ajAzOWQycXE1M2VibWNiZjkifQ.7JrNDHO9geEP_L9UT4hGgg';
 
         let map;
@@ -82,13 +81,13 @@
         const statusDiv = document.getElementById('status');
         const historicalLocations = [
             {
-                "id": "port-blakely-mill",
+                "id": "port-blakely",
                 "name": "Port Blakely Mill Site",
                 "coordinates": {
-                    "lat": 47.5934,
-                    "lng": -122.5164
+                    "lat": 47.5963,
+                    "lng": -122.5107
                 },
-                "shortDescription": "Site of one of the world's largest sawmills (1864-1922)",
+                "shortDescription": "Site of the historic Port Blakely Mill, once the world's largest sawmill",
                 "historicalPeriods": ["1864-1922"]
             },
             {
@@ -100,6 +99,56 @@
                 },
                 "shortDescription": "Historic Japanese immigrant village that flourished near Port Blakely Mill",
                 "historicalPeriods": ["1883-1922"]
+            },
+            {
+                "id": "fort-vancouver",
+                "name": "Fort Vancouver National Historic Site",
+                "coordinates": {
+                    "lat": 45.6252,
+                    "lng": -122.6617
+                },
+                "shortDescription": "Reconstructed 19th-century fur trading post with living history demonstrations",
+                "historicalPeriods": ["1824-1866"]
+            },
+            {
+                "id": "mount-st-helens",
+                "name": "Mount St. Helens National Volcanic Monument",
+                "coordinates": {
+                    "lat": 46.1912,
+                    "lng": -122.1944
+                },
+                "shortDescription": "Site of the 1980 volcanic eruption with educational exhibits and hiking trails",
+                "historicalPeriods": ["1980-present"]
+            },
+            {
+                "id": "fort-casey",
+                "name": "Fort Casey Historical State Park",
+                "coordinates": {
+                    "lat": 48.1639,
+                    "lng": -122.6769
+                },
+                "shortDescription": "Former military installation with historic lighthouse and coastal defense batteries",
+                "historicalPeriods": ["1890s-1940s"]
+            },
+            {
+                "id": "whitman-mission",
+                "name": "Whitman Mission National Historic Site",
+                "coordinates": {
+                    "lat": 46.0422,
+                    "lng": -118.4628
+                },
+                "shortDescription": "Site of the 1847 Whitman massacre and early American settlement",
+                "historicalPeriods": ["1836-1847"]
+            },
+            {
+                "id": "manhattan-project",
+                "name": "Manhattan Project National Historical Park - Hanford Site",
+                "coordinates": {
+                    "lat": 46.5505,
+                    "lng": -119.4880
+                },
+                "shortDescription": "Site of plutonium production for the first nuclear weapons",
+                "historicalPeriods": ["1943-1945"]
             }
         ];
 
@@ -108,7 +157,7 @@
             map = new mapboxgl.Map({
                 container: 'map',
                 style: 'mapbox://styles/mapbox/outdoors-v12',
-                center: [-122.5199, 47.6262],
+                center: [-122.5199, 47.6262], // Centered on Bainbridge Island
                 zoom: 12
             });
             
