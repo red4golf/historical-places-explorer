@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapPinIcon, Upload, X } from 'lucide-react';
+import { useGeolocation } from '../hooks/useGeolocation';
 
 const TIME_PERIODS = [
   "Pre-1850",
@@ -30,6 +31,7 @@ const AddLocationButton = ({ onLocationAdded, setCurrentLocation }) => {
   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const { getCurrentLocation } = useGeolocation();
 
   // Load existing locations for relationships
   useEffect(() => {
@@ -44,31 +46,16 @@ const AddLocationButton = ({ onLocationAdded, setCurrentLocation }) => {
   const getLocation = () => {
     setIsLoading(true);
     setError('');
-
-    if (!navigator.geolocation) {
-      setError('Geolocation is not supported by your browser');
-      setIsLoading(false);
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const newLocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
+    getCurrentLocation()
+      .then((newLocation) => {
         setLocation(newLocation);
         setCurrentLocation(newLocation);
         setIsLoading(false);
-      },
-      (error) => {
-        setError('Unable to get location: ' + error.message);
+      })
+      .catch((err) => {
+        setError('Unable to get location: ' + err.message);
         setIsLoading(false);
-      },
-      {
-        enableHighAccuracy: true
-      }
-    );
+      });
   };
 
   const handlePhotoSelect = (event) => {

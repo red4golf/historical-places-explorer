@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useGeolocation } from '../../hooks/useGeolocation';
 import { 
   generateLocationTemplate, 
   generateStoryMarkdown, 
@@ -26,49 +27,37 @@ const NewLocationForm = ({ onGenerate, className }) => {
   });
   const [gpsStatus, setGpsStatus] = useState('');
   const [isGettingLocation, setIsGettingLocation] = useState(false);
+  const { getCurrentLocation } = useGeolocation();
 
   const getLocation = () => {
     setIsGettingLocation(true);
     setGpsStatus('Acquiring location...');
-
-    if (!navigator.geolocation) {
-      setGpsStatus('Geolocation is not supported by your browser');
-      setIsGettingLocation(false);
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setFormData(prev => ({
+    getCurrentLocation()
+      .then((coords) => {
+        setFormData((prev) => ({
           ...prev,
-          lat: position.coords.latitude.toFixed(6),
-          lng: position.coords.longitude.toFixed(6)
+          lat: coords.lat.toFixed(6),
+          lng: coords.lng.toFixed(6)
         }));
         setGpsStatus('Location acquired!');
         setIsGettingLocation(false);
-      },
-      (error) => {
-        switch(error.code) {
+      })
+      .catch((error) => {
+        switch (error.code) {
           case error.PERMISSION_DENIED:
-            setGpsStatus("Location permission denied");
+            setGpsStatus('Location permission denied');
             break;
           case error.POSITION_UNAVAILABLE:
-            setGpsStatus("Location information unavailable");
+            setGpsStatus('Location information unavailable');
             break;
           case error.TIMEOUT:
-            setGpsStatus("Location request timed out");
+            setGpsStatus('Location request timed out');
             break;
           default:
-            setGpsStatus("An unknown error occurred");
+            setGpsStatus('An unknown error occurred');
         }
         setIsGettingLocation(false);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
-      }
-    );
+      });
   };
 
   const handleSubmit = (e) => {

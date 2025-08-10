@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useGeolocation } from '../../hooks/useGeolocation';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -31,6 +32,7 @@ const LocationEditorModal = ({ location, onClose, onSave }) => {
   );
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
+  const { getCurrentLocation } = useGeolocation();
 
   const validateForm = () => {
     const newErrors = {};
@@ -90,24 +92,19 @@ const LocationEditorModal = ({ location, onClose, onSave }) => {
   };
 
   const handleCoordinateSelect = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setFormData(prev => ({
-            ...prev,
-            coordinates: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            }
-          }));
-        },
-        (error) => {
-          setErrors({ coordinates: 'Failed to get location: ' + error.message });
-        }
-      );
-    } else {
-      setErrors({ coordinates: 'Geolocation is not supported' });
-    }
+    getCurrentLocation()
+      .then((coords) => {
+        setFormData((prev) => ({
+          ...prev,
+          coordinates: {
+            lat: coords.lat,
+            lng: coords.lng
+          }
+        }));
+      })
+      .catch((error) => {
+        setErrors({ coordinates: 'Failed to get location: ' + error.message });
+      });
   };
 
   const handlePeriodAdd = (period) => {

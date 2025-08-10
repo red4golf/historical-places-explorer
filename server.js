@@ -4,6 +4,7 @@ import { promises as fs } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import cors from 'cors';
+import { readJson } from './src/utils/fileUtils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -42,8 +43,7 @@ app.get('/api/locations', async (req, res) => {
         .filter(file => file.endsWith('.json') && !file.startsWith('.'))
         .map(async file => {
           try {
-            const content = await fs.readFile(path.join(LOCATIONS_DIR, file), 'utf8');
-            const location = JSON.parse(content);
+            const location = await readJson(path.join(LOCATIONS_DIR, file));
             console.log('Loaded verified location:', location.name);
             return { ...location, isDraft: false };
           } catch (error) {
@@ -60,8 +60,7 @@ app.get('/api/locations', async (req, res) => {
         .filter(file => file.endsWith('.json') && !file.startsWith('.'))
         .map(async file => {
           try {
-            const content = await fs.readFile(path.join(DRAFTS_DIR, file), 'utf8');
-            const location = JSON.parse(content);
+            const location = await readJson(path.join(DRAFTS_DIR, file));
             console.log('Loaded draft location:', location.name);
             return { ...location, isDraft: true };
           } catch (error) {
