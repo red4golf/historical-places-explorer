@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import Map from './components/Map';
+import React, { useState, useEffect, Suspense } from 'react';
+const Map = React.lazy(() => import('./components/Map'));
 import AddLocationButton from './components/AddLocationButton';
+import { useGeolocation } from './hooks/useGeolocation';
 
 function App() {
   const [locations, setLocations] = useState([]);
   const [currentLocation, setCurrentLocation] = useState(null);
+  const { getCurrentLocation } = useGeolocation();
 
   useEffect(() => {
     fetch('/api/locations')
@@ -21,31 +23,16 @@ function App() {
     setLocations([...locations, location]);
   };
 
-  const getCurrentLocation = () => {
-    if (!navigator.geolocation) {
-      alert('Geolocation is not supported by your browser');
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const newLocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        console.log('Got current location:', newLocation);
-        setCurrentLocation(newLocation);
-      },
-      (error) => {
+  const handleGetLocation = () => {
+    getCurrentLocation()
+      .then((loc) => {
+        console.log('Got current location:', loc);
+        setCurrentLocation(loc);
+      })
+      .catch((error) => {
         console.error('Error getting location:', error);
         alert('Unable to get location: ' + error.message);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      }
-    );
+      });
   };
 
   return (
@@ -53,7 +40,7 @@ function App() {
       <div className="p-4 flex justify-between items-center bg-white shadow-sm z-10">
         <h1 className="text-xl font-bold">Historical Places Explorer</h1>
         <button
-          onClick={getCurrentLocation}
+          onClick={handleGetLocation}
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
         >
           Get Location
@@ -61,10 +48,9 @@ function App() {
       </div>
 
       <div className="flex-1 relative w-full h-full">
-        <Map 
-          locations={locations} 
-          currentLocation={currentLocation} 
-        />
+        <Suspense fallback={<div>Loading map...</div>}>
+          <Map locations={locations} currentLocation={currentLocation} />
+        </Suspense>
         <div className="absolute bottom-4 right-4 z-10">
           <AddLocationButton 
             onLocationAdded={handleNewLocation}

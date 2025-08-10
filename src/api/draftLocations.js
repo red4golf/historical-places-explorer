@@ -1,11 +1,7 @@
 import express from 'express';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { readJson, writeJson } from '../utils/fileUtils.js';
 
 const router = express.Router();
 
@@ -29,8 +25,6 @@ router.post('/locations/draft', async (req, res) => {
     const draftPath = path.join(DRAFTS_DIR, `${locationData.id}.json`);
     
     // Ensure drafts directory exists
-    await fs.mkdir(DRAFTS_DIR, { recursive: true });
-    
     // Save draft location with metadata
     const draftData = {
       ...locationData,
@@ -38,11 +32,8 @@ router.post('/locations/draft', async (req, res) => {
       status: 'pending_review',
       reviewNotes: []
     };
-    
-    await fs.writeFile(
-      draftPath, 
-      JSON.stringify(draftData, null, 2)
-    );
+
+    await writeJson(draftPath, draftData);
     
     res.json({ 
       success: true, 
@@ -60,21 +51,12 @@ router.post('/locations/draft', async (req, res) => {
 // Get all draft locations
 router.get('/locations/drafts', async (req, res) => {
   try {
-    // Ensure drafts directory exists
-    await fs.mkdir(DRAFTS_DIR, { recursive: true });
-    
     // Read all draft files except README.md
     const files = await fs.readdir(DRAFTS_DIR);
     const drafts = await Promise.all(
       files
         .filter(file => file.endsWith('.json'))
-        .map(async (file) => {
-          const content = await fs.readFile(
-            path.join(DRAFTS_DIR, file), 
-            'utf-8'
-          );
-          return JSON.parse(content);
-        })
+        .map(async (file) => readJson(path.join(DRAFTS_DIR, file)))
     );
     
     // Sort by submission date, newest first
@@ -114,10 +96,8 @@ router.delete('/locations/draft/:id', async (req, res) => {
 router.post('/locations/draft/:id/notes', async (req, res) => {
   try {
     const draftPath = path.join(DRAFTS_DIR, `${req.params.id}.json`);
-    
-    // Read existing draft
-    const content = await fs.readFile(draftPath, 'utf-8');
-    const draft = JSON.parse(content);
+
+    const draft = await readJson(draftPath);
     
     // Add note
     const note = {
@@ -129,7 +109,7 @@ router.post('/locations/draft/:id/notes', async (req, res) => {
     draft.reviewNotes.push(note);
     
     // Save updated draft
-    await fs.writeFile(draftPath, JSON.stringify(draft, null, 2));
+    await writeJson(draftPath, draft);
     
     res.json({ 
       success: true, 
@@ -146,10 +126,8 @@ router.post('/locations/draft/:id/notes', async (req, res) => {
 router.post('/locations/draft/:id/approve', async (req, res) => {
   try {
     const draftPath = path.join(DRAFTS_DIR, `${req.params.id}.json`);
-    
-    // Read draft content
-    const content = await fs.readFile(draftPath, 'utf-8');
-    const draft = JSON.parse(content);
+
+    const draft = await readJson(draftPath);
     
     // Format for approved location
     const approvedLocation = {
@@ -165,7 +143,7 @@ router.post('/locations/draft/:id/approve', async (req, res) => {
     
     // Save to main locations directory
     const locationPath = path.join(LOCATIONS_DIR, `${draft.id}.json`);
-    await fs.writeFile(locationPath, JSON.stringify(approvedLocation, null, 2));
+    await writeJson(locationPath, approvedLocation);
     
     // Delete draft
     await fs.unlink(draftPath);

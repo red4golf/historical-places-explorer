@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import LocationDetailModal from './LocationDetailModal';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiY2VpbmFyc29uIiwiYSI6ImNtNGEybmN0ajAzOWQycXE1M2VibWNiZjkifQ.7JrNDHO9geEP_L9UT4hGgg';
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
 const Map = ({ locations, currentLocation }) => {
   const mapContainer = useRef(null);
@@ -11,7 +11,6 @@ const Map = ({ locations, currentLocation }) => {
   const markers = useRef([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
 
-  // Helper function to get coordinates from a location object
   const getCoordinates = (location) => {
     if (location.coordinates) {
       return location.coordinates;
@@ -22,7 +21,6 @@ const Map = ({ locations, currentLocation }) => {
     return null;
   };
 
-  // Helper function to get name from a location object
   const getName = (location) => {
     if (typeof location.name === 'string') {
       return location.name;
@@ -41,7 +39,7 @@ const Map = ({ locations, currentLocation }) => {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/outdoors-v12',
-        center: [-122.5199, 47.6262], // Bainbridge Island
+        center: [-122.5199, 47.6262],
         zoom: 12
       });
 
@@ -52,34 +50,31 @@ const Map = ({ locations, currentLocation }) => {
     }
   }, []);
 
-  // Update markers when locations change
   useEffect(() => {
     if (!map.current || !locations) return;
 
     console.log('Updating location markers...', locations);
 
-    // Clear existing markers
     markers.current.forEach(marker => marker.remove());
     markers.current = [];
 
-    // Add markers for all locations
     locations.forEach(location => {
       const coords = getCoordinates(location);
       if (!coords) return;
 
-      // Create popup
-      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+      const popupNode = document.createElement('div');
+      popupNode.innerHTML = `
         <div>
           <h3 class="font-bold">${getName(location)}</h3>
           <p class="text-sm">${location.shortDescription || location.content?.summary || ''}</p>
-          <button 
-            onclick="window.showLocationDetails('${location.id}')"
-            class="mt-2 text-sm text-blue-600 hover:underline"
-          >
-            View Details
-          </button>
+          <button class="mt-2 text-sm text-blue-600 hover:underline">View Details</button>
         </div>
-      `);
+      `;
+      popupNode.querySelector('button')?.addEventListener('click', () => {
+        setSelectedLocation(location);
+      });
+
+      const popup = new mapboxgl.Popup({ offset: 25 }).setDOMContent(popupNode);
 
       const marker = new mapboxgl.Marker()
         .setLngLat([coords.lng, coords.lat])
@@ -88,31 +83,20 @@ const Map = ({ locations, currentLocation }) => {
 
       markers.current.push(marker);
     });
-
-    // Add global handler for the "View Details" button
-    window.showLocationDetails = (locationId) => {
-      const location = locations.find(loc => loc.id === locationId);
-      if (location) {
-        setSelectedLocation(location);
-      }
-    };
   }, [locations]);
 
-  // Update current location marker
   useEffect(() => {
     if (!map.current || !currentLocation) return;
 
     console.log('Setting current location:', currentLocation);
 
     try {
-      // Add marker for current location
       const marker = new mapboxgl.Marker({ color: '#FF0000' })
         .setLngLat([currentLocation.lng, currentLocation.lat])
         .addTo(map.current);
 
       markers.current.push(marker);
 
-      // Center map on new location
       map.current.flyTo({
         center: [currentLocation.lng, currentLocation.lat],
         zoom: 15
@@ -124,17 +108,17 @@ const Map = ({ locations, currentLocation }) => {
 
   return (
     <>
-      <div 
-        ref={mapContainer} 
+      <div
+        ref={mapContainer}
         className="absolute inset-0"
-        style={{ 
+        style={{
           minHeight: '400px',
           width: '100%',
           height: '100%'
-        }} 
+        }}
       />
       {selectedLocation && (
-        <LocationDetailModal 
+        <LocationDetailModal
           location={selectedLocation}
           onClose={() => setSelectedLocation(null)}
         />
